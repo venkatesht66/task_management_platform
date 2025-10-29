@@ -39,95 +39,209 @@ const createTask = async (req, res) => {
 const listTasks = async (req, res) => {
   try {
     const { page = 1, limit = 20, q, status, priority, tag, assigned } = req.query;
-    const filter = { deletedAt: null };
-    if (status) filter.status = status;
-    if (priority) filter.priority = priority;
-    if (q) filter.$or = [{ title: { $regex: q, $options: 'i' } }, { description: { $regex: q, $options: 'i' } }];
-    if (tag) filter.tags = tag;
-    if (assigned) filter.assignedTo = assigned;
+
+    const accessFilter = {
+      $or: [
+        { createdBy: req.user.id },
+        { assignedTo: req.user.id }
+      ]
+    };
+
+    const searchFilter = { deletedAt: null };
+
+    if (status) searchFilter.status = status;
+    if (priority) searchFilter.priority = priority;
+    if (tag) searchFilter.tags = tag;
+    if (assigned) searchFilter.assignedTo = assigned;
+
+    const filter = {
+      ...searchFilter,
+      ...accessFilter,
+    };
+
+    if (q) {
+      filter.$and = [
+        accessFilter,
+        {
+          $or: [
+            { title: { $regex: q, $options: "i" } },
+            { description: { $regex: q, $options: "i" } },
+          ],
+        },
+      ];
+    }
 
     const skip = (parseInt(page) - 1) * parseInt(limit);
+
     const tasks = await Task.find(filter)
-      .populate('createdBy', 'fullName email')
-      .populate('assignedTo', 'fullName email')
+      .populate("createdBy", "fullName email")
+      .populate("assignedTo", "fullName email")
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(parseInt(limit));
 
     const total = await Task.countDocuments(filter);
-    res.json({ ok: true, data: tasks, meta: { total, page: parseInt(page), limit: parseInt(limit) } });
+
+    res.json({
+      ok: true,
+      data: tasks,
+      meta: { total, page: parseInt(page), limit: parseInt(limit) },
+    });
   } catch (err) {
-    console.error('List tasks error:', err);
-    res.status(500).json({ ok: false, error: 'List tasks failed' });
+    console.error("List tasks error:", err);
+    res.status(500).json({ ok: false, error: "List tasks failed" });
   }
 };
 
 const getTask = async (req, res) => {
   try {
-    const t = await Task.findById(req.params.id).populate('createdBy', 'fullName email').populate('assignedTo', 'fullName email');
-    if (!t || t.deletedAt) return res.status(404).json({ ok: false, error: 'Not found' });
-    res.json({ ok: true, data: t });
+    const task = await Task.findById(req.params.id)
+      .populate("createdBy", "fullName email")
+      .populate("assignedTo", "fullName email");
+
+    if (!task || task.deletedAt)
+      return res.status(404).json({ ok: false, error: "Task not found" });
+
+    const canAccess =
+      task.createdBy?._id?.toString() === req.user.id.toString() ||
+      task.assignedTo.some(
+        (u) => u._id.toString() === req.user.id.toString()
+      );
+
+    if (!canAccess)
+      return res.status(403).json({ ok: false, error: "Forbidden" });
+
+    res.json({ ok: true, data: task });
   } catch (err) {
-    console.error('Get task error:', err);
-    res.status(500).json({ ok: false, error: 'Get task failed' });
+    console.error("Get task error:", err);
+    res.status(500).json({ ok: false, error: "Get task failed" });
   }
 };
 
 const updateTask = async (req, res) => {
   try {
     const id = req.params.id;
-    const allowed = ['title','description','status','priority','dueDate','tags','assignedTo'];
-    const updates = {};
-    allowed.forEach(k => {
-      if (req.body[k] !== undefined) updates[k] = req.body[k];
+    const task = await Task.findById(id);
+
+    if (!task || task.deletedAt)
+      return res.status(404).json({ ok: false, error: "Task not found" });
+
+    const canAccess =
+      task.createdBy?.toString() === req.user.id.toString() ||
+      task.assignedTo.some(
+        (u) => u.toString() === req.user.id.toString()
+      );
+
+    if (!canAccess)
+      return res.status(403).json({ ok: false, error: "Forbidden" });
+
+    const allowed = [
+      "title",
+      "description",
+      "status",
+      "priority",
+      "dueDate",
+      "tags",
+      "assignedTo",
+    ];
+
+    allowed.forEach((key) => {
+      if (req.body[key] !== undefined) {
+        task[key] = req.body[key];
+      }
     });
 
-    if (Object.keys(updates).length === 0) {
-      return res.status(400).json({ ok: false, error: 'No fields to update' });
-    }
-
-    const task = await Task.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
-    if (!task) {
-      console.error(`Task not found: ID ${id}`);
-      return res.status(404).json({ ok: false, error: 'Not found' });
-    }
+    await task.save();
 
     res.json({ ok: true, data: task });
   } catch (err) {
-    console.error('Update task error:', err);
-    res.status(500).json({ ok: false, error: 'Update failed' });
+    console.error("Update task error:", err);
+    res.status(500).json({ ok: false, error: "Update failed" });
   }
 };
 
 const deleteTask = async (req, res) => {
   try {
-    const t = await Task.findById(req.params.id);
-    if (!t) return res.status(404).json({ ok: false, error: 'Not found' });
-    t.deletedAt = new Date();
-    await t.save();
-    res.status(204).send();
+    const id = req.params.id;
+    const task = await Task.findById(id);
+
+    if (!task || task.deletedAt)
+      return res.status(404).json({ ok: false, error: "Task not found" });
+
+    const canAccess =
+      task.createdBy?.toString() === req.user.id.toString() ||
+      task.assignedTo.some(
+        (u) => u.toString() === req.user.id.toString()
+      );
+
+    if (!canAccess)
+      return res.status(403).json({ ok: false, error: "Forbidden" });
+
+    task.deletedAt = new Date();
+    await task.save();
+
+    res.status(200).json({ ok: true, message: "Task deleted" });
   } catch (err) {
-    console.error('Delete task error:', err);
-    res.status(500).json({ ok: false, error: 'Delete failed' });
+    console.error("Delete task error:", err);
+    res.status(500).json({ ok: false, error: "Delete failed" });
   }
 };
 
 const bulkCreate = async (req, res) => {
   try {
     const { tasks } = req.body;
-    if (!Array.isArray(tasks)) return res.status(400).json({ ok: false, error: 'tasks must be array' });
+    if (!Array.isArray(tasks) || tasks.length === 0) {
+      return res
+        .status(400)
+        .json({ ok: false, error: "Tasks must be a non-empty array" });
+    }
+
     const created = [];
     const errors = [];
+
     for (let i = 0; i < tasks.length; i++) {
       const t = tasks[i];
-      if (!t.title) { errors.push({ index: i, reason: 'title required' }); continue; }
-      const createdTask = await Task.create({ title: xss(t.title), description: xss(t.description || ''), createdBy: req.user?.id || null });
-      created.push(createdTask);
+
+      // ✅ Validate
+      if (!t.title) {
+        errors.push({ index: i, reason: "Title required" });
+        continue;
+      }
+
+      // ✅ Only allow safe fields
+      const newTaskData = {
+        title: xss(t.title),
+        description: xss(t.description || ""),
+        status: t.status || "todo",
+        priority: t.priority || "medium",
+        dueDate: t.dueDate ? new Date(t.dueDate) : undefined,
+        tags: Array.isArray(t.tags) ? t.tags : [],
+        assignedTo: Array.isArray(t.assignedTo)
+          ? t.assignedTo.map((id) => new mongoose.Types.ObjectId(id))
+          : [],
+        createdBy: req.user.id, // ✅ ownership
+      };
+
+      // ✅ Save the task
+      const newTask = await Task.create(newTaskData);
+      created.push({
+        id: newTask._id,
+        title: newTask.title,
+        status: newTask.status,
+      });
     }
-    res.status(201).json({ ok: true, created: created.length, errors });
+
+    res.status(201).json({
+      ok: true,
+      message: "Bulk create completed",
+      createdCount: created.length,
+      failedCount: errors.length,
+      created,
+      errors,
+    });
   } catch (err) {
-    console.error('Bulk create error:', err);
-    res.status(500).json({ ok: false, error: 'Bulk create failed' });
+    console.error("Bulk create error:", err);
+    res.status(500).json({ ok: false, error: "Bulk create failed" });
   }
 };
 
