@@ -11,7 +11,7 @@ const {
 
 router.post("/upload/:taskId", auth, upload.array("files"), uploadFiles);
 router.get("/task/:taskId", auth, getTaskFiles);
-router.get("/:id/download", auth, downloadFile);
+router.get("/download/:id", auth, downloadFile);
 router.delete("/:id", auth, deleteFile);
 
 module.exports = router;

@@ -202,27 +202,24 @@ const bulkCreate = async (req, res) => {
     for (let i = 0; i < tasks.length; i++) {
       const t = tasks[i];
 
-      // ✅ Validate
       if (!t.title) {
         errors.push({ index: i, reason: "Title required" });
         continue;
       }
 
-      // ✅ Only allow safe fields
       const newTaskData = {
         title: xss(t.title),
         description: xss(t.description || ""),
-        status: t.status || "todo",
+        status: t.status || "open",
         priority: t.priority || "medium",
         dueDate: t.dueDate ? new Date(t.dueDate) : undefined,
         tags: Array.isArray(t.tags) ? t.tags : [],
         assignedTo: Array.isArray(t.assignedTo)
           ? t.assignedTo.map((id) => new mongoose.Types.ObjectId(id))
           : [],
-        createdBy: req.user.id, // ✅ ownership
+        createdBy: req.user.id,
       };
 
-      // ✅ Save the task
       const newTask = await Task.create(newTaskData);
       created.push({
         id: newTask._id,

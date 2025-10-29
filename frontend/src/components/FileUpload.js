@@ -12,7 +12,7 @@ export default function FileUpload({ onFiles }) {
     const files = Array.from(e.dataTransfer.files);
     if (files.length) {
       console.log("Dropped files:", files);
-      onFiles(files); // Trigger upload
+      onFiles(files);
     }
   };
 
@@ -20,7 +20,7 @@ export default function FileUpload({ onFiles }) {
     const files = Array.from(e.target.files);
     if (files.length) {
       console.log("Selected files:", files);
-      onFiles(files); // Trigger upload
+      onFiles(files);
     }
   };
 
