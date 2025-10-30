@@ -26,7 +26,7 @@ Backend
 
 Folder Structure  
 
-Backend  
+Backend:  
 backend/  
 ├── server.js  
 ├── config/  
@@ -58,7 +58,7 @@ backend/
 
 
 
-Frontend  
+Frontend:  
 frontend/  
 ├── src/  
 │   ├── index.js  
