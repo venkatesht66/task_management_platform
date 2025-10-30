@@ -96,8 +96,8 @@ const listTasks = async (req, res) => {
 const getTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id)
-      .populate("createdBy", "fullName email")
-      .populate("assignedTo", "fullName email");
+      .populate("createdBy", "name email")
+      .populate("assignedTo", "name email");
 
     if (!task || task.deletedAt)
       return res.status(404).json({ ok: false, error: "Task not found" });
