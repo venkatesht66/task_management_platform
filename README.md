@@ -1,27 +1,27 @@
-Task Management Platform
+Task Management Platform  
 
-Overview
+Overview  
 
-This is a Task Management Platform built using the MERN Stack (MongoDB, Express.js, React.js, Node.js).
-It allows users to create, assign, manage, and track tasks, upload related files, comment on tasks, and view analytics dashboards.
-The project follows the MVC architecture for scalability and maintainability.
+This is a Task Management Platform built using the MERN Stack (MongoDB, Express.js, React.js, Node.js).  
+It allows users to create, assign, manage, and track tasks, upload related files, comment on tasks, and view analytics dashboards.  
+The project follows the MVC architecture for scalability and maintainability.  
 
 
-Tech Stack
+Tech Stack  
 
-Frontend
-	•	React.js
-	•	React Router
-	•	Context API (for authentication state management)
-	•	Tailwind / Custom CSS
+Frontend  
+	•	React.js  
+	•	React Router  
+	•	Context API (for authentication state management)  
+	•	Tailwind / Custom CSS  
 
-Backend
-	•	Node.js
-	•	Express.js
-	•	MongoDB with Mongoose
-	•	Multer (for file uploads)
-	•	JSON Web Tokens (JWT)
-	•	Bcrypt.js (for password hashing)
+Backend  
+	•	Node.js  
+	•	Express.js  
+	•	MongoDB with Mongoose  
+	•	Multer (for file uploads)  
+	•	JSON Web Tokens (JWT)  
+	•	Bcrypt.js (for password hashing)  
 
 
 Folder Structure
