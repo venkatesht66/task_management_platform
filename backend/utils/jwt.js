@@ -7,4 +7,5 @@ function signToken(payload, expiresIn = '7d') {
 function verifyToken(token) {
   return jwt.verify(token, SECRET);
 }
+
 module.exports = { signToken, verifyToken };

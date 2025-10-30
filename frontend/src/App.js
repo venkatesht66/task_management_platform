@@ -14,14 +14,12 @@ import Analytics from "./pages/Analytics";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 
-/* Private wrapper */
 function Private({ children }) {
   const { token } = useAuth();
   if (!token) return <Navigate to="/login" replace />;
   return children;
 }
 
-/* Layout wrapper */
 function Layout({ children }) {
   return (
     <div className="layout">
