@@ -1,21 +1,21 @@
-Task Management Platform  
+###Task Management Platform  
 
-Overview  
+##Overview  
 
 This is a Task Management Platform built using the MERN Stack (MongoDB, Express.js, React.js, Node.js).  
 It allows users to create, assign, manage, and track tasks, upload related files, comment on tasks, and view analytics dashboards.  
 The project follows the MVC architecture for scalability and maintainability.  
 
 
-Tech Stack  
+##Tech Stack  
 
-Frontend  
+#Frontend  
 	•	React.js  
 	•	React Router  
 	•	Context API (for authentication state management)  
 	•	Tailwind / Custom CSS  
 
-Backend  
+#Backend  
 	•	Node.js  
 	•	Express.js  
 	•	MongoDB with Mongoose  
@@ -24,9 +24,9 @@ Backend
 	•	Bcrypt.js (for password hashing)  
 
 
-Folder Structure  
+##Folder Structure  
 
-Backend:  
+#Backend:  
 backend/  
 ├── server.js  
 ├── config/  
@@ -58,7 +58,7 @@ backend/
 
 
 
-Frontend:  
+#Frontend:  
 frontend/  
 ├── src/  
 │   ├── index.js  
@@ -81,10 +81,10 @@ frontend/
 │       └── Profile.js  
 
 
-Installation and Setup  
+##Installation and Setup  
 
 
-Backend:  
+#Backend:  
 
 cd backend  
 npm install  
@@ -99,7 +99,7 @@ UPLOAD_DIR=uploads
   
 
   
-Frontend:  
+#Frontend:  
 
 cd frontend  
 npm install  
@@ -111,7 +111,7 @@ Frontend: http://localhost:3000
 Backend: http://localhost:4000  
 
   
-API Documentation  
+##API Documentation  
 
 You can test all APIs in Postman.  
 
