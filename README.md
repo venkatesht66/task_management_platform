@@ -86,29 +86,30 @@ The project follows the MVC architecture for scalability and maintainability.
 
 # Backend:  
 
-cd backend  
-npm install  
-npm start  
+	cd backend  
+	npm install  
+	npm start  
 
-(optional)Create a .env file in the backend/ folder:  
+# Create a .env file in the backend/ folder:  
 
-PORT=4000  
-MONGO_URI=mongodb+srv://venkatesht6:venky457146@clusterelection.hewacgw.mongodb.net/?retryWrites=true&w=majority&appName=ClusterElection  
-JWT_SECRET=supersecret  
-UPLOAD_DIR=uploads  
+	PORT=4000  
+	MONGO_URI=mongodb+srv://venkatesht6:venky457146@clusterelection.hewacgw.mongodb.net/?retryWrites=true&w=majority&appName=ClusterElection  
+	JWT_SECRET=supersecret  
+	UPLOAD_DIR=uploads  
   
 
   
 # Frontend:  
 
-cd frontend  
-npm install  
-npm start   
+	cd frontend  
+	npm install  
+	npm start   
  
   
 The app will start at:  
-Frontend: http://localhost:3000  
-Backend: http://localhost:4000  
+
+	Frontend: http://localhost:3000  
+	Backend: http://localhost:4000  
 
   
 ## API Documentation  
@@ -116,13 +117,14 @@ Backend: http://localhost:4000
 You can test all APIs in Postman.  
 
 Postman Collection Includes:  
+
 	•	Authentication → /api/auth  
 	•	Tasks → /api/tasks  
 	•	Comments → /api/comments  
 	•	Files → /api/files  
 	•	Analytics → /api/analytics  
 
-Once ready, publish your Postman documentation and add the link below   
+Once ready, publish your Postman documentation and add the link below     
 
 API DOCs: https://www.postman.com/docking-module-cosmologist-62619236/task-management-platform/collection/1okmiss/task-management-platform-api?action=share&creator=41983922  
 
