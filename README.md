@@ -27,58 +27,58 @@ The project follows the MVC architecture for scalability and maintainability.
 ## Folder Structure  
 
 # Backend:  
-backend/  
-├── server.js  
-├── config/  
-│   └── db.js  
-├── controllers/  
-│   ├── authController.js  
-│   ├── taskController.js  
-│   ├── fileController.js  
-│   ├── commentController.js  
-│   └── analyticsController.js  
-├── models/  
-│   ├── User.js  
-│   ├── Task.js  
-│   ├── File.js  
-│   └── Comment.js  
-├── middlewares/
-│   ├── auth.js  
-│   └── errorHandler.js  
-├── routes/  
-│   ├── authRoutes.js  
-│   ├── taskRoutes.js  
-│   ├── fileRoutes.js  
-│   ├── commentRoutes.js  
-│   └── analyticsRoutes.js  
-├── uploads/  
-└── utils/  
-    ├── hash.js  
-    └── jwt.js  
+	backend/  
+	├── server.js  
+	├── config/  
+	│   └── db.js  
+	├── controllers/  
+	│   ├── authController.js  
+	│   ├── taskController.js  
+	│   ├── fileController.js  
+	│   ├── commentController.js  
+	│   └── analyticsController.js  
+	├── models/  
+	│   ├── User.js  
+	│   ├── Task.js  
+	│   ├── File.js  
+	│   └── Comment.js  
+	├── middlewares/
+	│   ├── auth.js  
+	│   └── errorHandler.js  
+	├── routes/  
+	│   ├── authRoutes.js  
+	│   ├── taskRoutes.js  
+	│   ├── fileRoutes.js  
+	│   ├── commentRoutes.js  
+	│   └── analyticsRoutes.js  
+	├── uploads/  
+	└── utils/  
+	    ├── hash.js  
+	    └── jwt.js  
 
 
 
 # Frontend:  
-frontend/  
-├── src/  
-│   ├── index.js  
-│   ├── App.js  
-│   ├── api/  
-│   │   └── client.js  
-│   ├── context/  
-│   │   └── AuthContext.js  
-│   ├── components/  
-│   │   ├── TaskCard.js  
-│   │   ├── FileUpload.js  
-│   │   ├── Loader.js  
-│   │   └── Navbar.js  
-│   └── pages/  
-│       ├── Login.js  
-│       ├── Register.js  
-│       ├── Tasks.js  
-│       ├── TaskDetail.js  
-│       ├── Analytics.js  
-│       └── Profile.js  
+	frontend/  
+	├── src/  
+	│   ├── index.js  
+	│   ├── App.js  
+	│   ├── api/  
+	│   │   └── client.js  
+	│   ├── context/  
+	│   │   └── AuthContext.js  
+	│   ├── components/  
+	│   │   ├── TaskCard.js  
+	│   │   ├── FileUpload.js  
+	│   │   ├── Loader.js  
+	│   │   └── Navbar.js  
+	│   └── pages/  
+	│       ├── Login.js  
+	│       ├── Register.js  
+	│       ├── Tasks.js  
+	│       ├── TaskDetail.js  
+	│       ├── Analytics.js  
+	│       └── Profile.js  
 
 
 ## Installation and Setup  
