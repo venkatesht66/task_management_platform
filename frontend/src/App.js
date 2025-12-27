@@ -21,17 +21,27 @@ function Private({ children }) {
 }
 
 function Layout({ children }) {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  const toggleMenu = () => setIsMenuOpen((v) => !v);
+
   return (
     <div className="layout">
-      <Sidebar />
+      <Sidebar
+        open={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+      />
+
       <div className="main">
-        <Navbar />
+        <Navbar
+          open={isMenuOpen}
+          onToggle={toggleMenu}
+        />
         <div className="content">{children}</div>
       </div>
     </div>
   );
 }
-
 export default function App() {
   return (
     <Routes>

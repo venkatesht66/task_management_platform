@@ -37,42 +37,68 @@ export default function Tasks() {
   };
 
   return (
-    <div>
+    <div className="content">
+      {/* Page Header */}
+      <div className="card">
+        <h2 className="page-title">My Tasks</h2>
+        <p className="muted">
+          Search, filter, and manage your tasks efficiently
+        </p>
+      </div>
+  
+      {/* Filters */}
       <div className="card controls">
         <input
-          placeholder="Search..."
+          placeholder="Search tasks..."
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />
-        <select value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value="">All status</option>
+  
+        <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+        >
+          <option value="">All Status</option>
           <option value="open">Open</option>
-          <option value="in_progress">In progress</option>
+          <option value="in_progress">In Progress</option>
           <option value="done">Done</option>
         </select>
-        <div style={{ display: "flex", gap: 8 }}>
+  
+        <div className="controls-actions">
           <button onClick={load}>Search</button>
-          <Link to="/tasks/new" className="btn-ghost" style={{ marginTop: "5px" }}>
-            New Task
-          </Link>
+          <button><Link to="/tasks/new" className="btn-ghost">
+            + New Task
+          </Link></button>
+          
         </div>
       </div>
-
-      <div>
-        {loading ? (
-          <div className="card">
-            <Loader />
-          </div>
-        ) : tasks.length ? (
-          tasks.map((t) => (
-            <TaskCard key={t._id || t.id} task={t} onDelete={handleDeleteTask} />
-          ))
-        ) : (
-          <div className="card">
-            No tasks. <Link to="/tasks/new">Create one</Link>
-          </div>
-        )}
-      </div>
+  
+      {/* Task List */}
+      {loading ? (
+        <div className="card">
+          <Loader />
+        </div>
+      ) : tasks.length ? (
+        <div className="task-list">
+          {tasks.map((t) => (
+            <TaskCard
+              key={t._id || t.id}
+              task={t}
+              onDelete={handleDeleteTask}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="card empty-state">
+          <h3>No tasks yet</h3>
+          <p className="muted">
+            You haven’t created any tasks. Get started now.
+          </p>
+          <Link to="/tasks/new" className="btn-link">
+            Create your first task 
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

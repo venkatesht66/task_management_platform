@@ -23,24 +23,60 @@ export default function Register(){
   };
 
   return (
-    <div className="auth-page" style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100vh'}}>
-      <form className="card form" onSubmit={submit} style={{minWidth:320,width:'100%',maxWidth:420}}>
-        <h2>Create account</h2>
-        {err && <div className="alert">{err}</div>}
-        <label>Name
-          <input value={name} onChange={e=>setName(e.target.value)} required />
-        </label>
-        <label>Email
-          <input type="email" value={email} onChange={e=>setEmail(e.target.value)} required />
-        </label>
-        <label>Password
-          <input type="password" value={password} onChange={e=>setPassword(e.target.value)} required />
-        </label>
-        <div style={{display:'flex',gap:8}}>
-          <button type="submit" disabled={busy}>{busy ? "Registering..." : "Register"}</button>
-          <Link to="/login" className="btn-ghost">Back to login</Link>
-        </div>
-      </form>
+    <div className="auth-page">
+      <div className="card card-lg">
+        <h2 className="page-title">Create Account</h2>
+        <p className="muted">Start managing your tasks efficiently</p>
+  
+        <form className="form" onSubmit={submit}>
+          {err && <div className="alert">{err}</div>}
+  
+          <div className="form-group">
+            <label>Full Name</label>
+            <input
+              placeholder="John Doe"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              required
+            />
+          </div>
+  
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+            />
+          </div>
+  
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="Minimum 6 characters"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+          </div>
+  
+          <button className="primary" type="submit" disabled={busy}>
+            {busy ? "Creating account..." : "Register"}
+          </button>
+  
+          <div className="divider" />
+  
+          <p className="muted" style={{ textAlign: "center" }}>
+            Already have an account?{" "}
+            <Link to="/login" className="btn-link">
+              Login
+            </Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }

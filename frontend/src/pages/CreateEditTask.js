@@ -49,32 +49,100 @@ export default function CreateEditTask({ editMode }) {
   };
 
   return (
-    <form className="card form" onSubmit={submit}>
-      <h2>{editMode ? "Edit Task" : "Create Task"}</h2>
-      {err && <div className="alert">{err}</div>}
-      <label>Title<input value={form.title} onChange={e=>setForm({...form,title:e.target.value})} required /></label>
-      <label>Description<textarea value={form.description} onChange={e=>setForm({...form,description:e.target.value})} /></label>
-      <label>Status
-        <select value={form.status} onChange={e=>setForm({...form,status:e.target.value})}>
-          <option value="open">Open</option>
-          <option value="in_progress">In progress</option>
-          <option value="done">Done</option>
-          <option value="archived">Archived</option>
-        </select>
-      </label>
-      <label>Priority
-        <select value={form.priority} onChange={e=>setForm({...form,priority:e.target.value})}>
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-          <option value="urgent">Urgent</option>
-        </select>
-      </label>
-      <label>Due date<input type="date" value={form.dueDate} onChange={e=>setForm({...form,dueDate:e.target.value})} /></label>
-      <div style={{display:'flex',gap:8}}>
-        <button type="submit">Save</button>
-        <button type="button" className="btn-ghost" onClick={()=>nav(-1)}>Cancel</button>
+    <div className="content">
+      <div className="card card-xl">
+        <h2 className="page-title">
+          {editMode ? "Edit Task" : "Create New Task"}
+        </h2>
+        <p className="muted">
+          {editMode
+            ? "Update task details and save changes"
+            : "Fill in the details to create a new task"}
+        </p>
+  
+        <form className="form" onSubmit={submit}>
+          {err && <div className="alert">{err}</div>}
+  
+          <div className="form-group">
+            <label>Title</label>
+            <input
+              placeholder="e.g. Prepare sprint report"
+              value={form.title}
+              onChange={e =>
+                setForm({ ...form, title: e.target.value })
+              }
+              required
+            />
+          </div>
+  
+          <div className="form-group">
+            <label>Description</label>
+            <textarea
+              rows="4"
+              placeholder="Add task description..."
+              value={form.description}
+              onChange={e =>
+                setForm({ ...form, description: e.target.value })
+              }
+            />
+          </div>
+  
+          <div className="form-group">
+            <label>Status</label>
+            <select
+              value={form.status}
+              onChange={e =>
+                setForm({ ...form, status: e.target.value })
+              }
+            >
+              <option value="open">Open</option>
+              <option value="in_progress">In Progress</option>
+              <option value="done">Done</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+  
+          <div className="form-group">
+            <label>Priority</label>
+            <select
+              value={form.priority}
+              onChange={e =>
+                setForm({ ...form, priority: e.target.value })
+              }
+            >
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+  
+          <div className="form-group">
+            <label>Due Date</label>
+            <input
+              type="date"
+              value={form.dueDate}
+              onChange={e =>
+                setForm({ ...form, dueDate: e.target.value })
+              }
+            />
+          </div>
+  
+          <div className="form-actions">
+            <button className="primary" type="submit" disabled={loading}>
+              {loading ? "Saving..." : "Save Task"}
+            </button>
+  
+            <button
+              type="button"
+              className="secondary"
+              onClick={() => nav(-1)}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   );
 }
